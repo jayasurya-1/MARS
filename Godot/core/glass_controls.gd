@@ -46,7 +46,7 @@ func _ready()->void:
 	column.add_child(close)
 	panel.hide()
 func change_speed(amount:float)->void:
-	if not Trial.running or Trial.game in ["TW","FW","BS"]: return
+	if not Trial.running or Trial.Rules.paced(Trial.game): return
 	var g=launcher.game_node
 	var old=Trial.reach_time()
 	var old_speed=Trial.speed
@@ -70,7 +70,7 @@ func change_speed(amount:float)->void:
 	Trial.annotation="RS:%.3f | previous:%.3f" % [Trial.speed,old_speed]
 	Records.log_event("Manual speed: "+Trial.annotation)
 func _input(event:InputEvent)->void:
-	if event is InputEventKey and event.pressed and not event.echo and event.ctrl_pressed and event.keycode==KEY_G and Trial.running and Trial.game not in ["TW","FW","BS"]:
+	if event is InputEventKey and event.pressed and not event.echo and event.ctrl_pressed and event.keycode==KEY_G and Trial.running and not Trial.Rules.paced(Trial.game):
 		panel.visible=not panel.visible
 		get_viewport().set_input_as_handled()
 	if panel.visible and event is InputEventKey and event.pressed and Trial.running:
@@ -94,7 +94,7 @@ func _process(delta:float)->void:
 		spark.life-=delta
 		spark.p+=spark.v*delta
 	sparks=sparks.filter(func(spark): return spark.life>0)
-	if not Trial.running or Trial.game in ["TW","FW","BS"]: panel.hide()
+	if not Trial.running or Trial.Rules.paced(Trial.game): panel.hide()
 	if panel.visible:
 		readout.text="%.3f m/s   •   target duration %.1f s
 Range: %.0f × %.0f cm" % [Trial.speed,Trial.reach_time(),Trial.rom.x*100,Trial.rom.y*100]

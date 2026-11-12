@@ -65,7 +65,7 @@ func _ready() -> void:
 	if result.next_speed > result.speed + 0.00001: speed_note += "  ▲ faster next time"
 	elif result.next_speed < result.speed - 0.00001: speed_note += "  ▼ a little slower next time"
 	else: speed_note += "  • unchanged"
-	if Trial.game in ["TW","FW","BS"]: speed_note="Patient-paced • finish each target before the next"
+	if Trial.Rules.paced(Trial.game): speed_note="Patient-paced • finish each target before the next"
 	box.add_child(UITheme.label(speed_note, 20, UITheme.MUTED))
 	var spacer = Control.new()
 	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL

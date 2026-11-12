@@ -49,7 +49,12 @@
     "choose_game": "Choose a game.",
     "assess_needed": "Do the range assessment first.",
     "plane": "Choose the training plane. Press the button to save.",
-    "summary": "This is your progress. Finish when you are done."
+    "summary": "This is your progress. Finish when you are done.",
+    "CK": "Carry the vegetables to the pot. Then stir.",
+    "DR": "Hold still on the glowing colour, then on the shape.",
+    "IR": "Move the iron over the clothes to smooth them.",
+    "MP": "Mop up the dust piles.",
+    "SO": "Hold still to pick up. Take it to the right box."
   },
   "ta": {
     "SS": "இடது வலதாக நகர்த்தி குறி வையுங்கள். சுட, அசையாமல் இருங்கள்.",
@@ -101,6 +106,11 @@
     "choose_game": "ஒரு விளையாட்டைத் தேர்ந்தெடுங்கள்.",
     "assess_needed": "முதலில் வீச்சு அளவீடு செய்யுங்கள்.",
     "plane": "பயிற்சித் தளத்தைத் தேர்ந்தெடுங்கள். சேமிக்க பொத்தானை அழுத்துங்கள்.",
-    "summary": "இது உங்கள் முன்னேற்றம். முடித்ததும் அமர்வை முடியுங்கள்."
+    "summary": "இது உங்கள் முன்னேற்றம். முடித்ததும் அமர்வை முடியுங்கள்.",
+    "CK": "காய்கறிகளைப் பானைக்குக் கொண்டு செல்லுங்கள். பிறகு கலக்குங்கள்.",
+    "DR": "ஒளிரும் நிறத்தில், பிறகு வடிவத்தில் அசையாமல் வையுங்கள்.",
+    "IR": "துணிகள் மேல் இஸ்திரிப் பெட்டியை நகர்த்தி சீராக்குங்கள்.",
+    "MP": "தூசுக் குவியல்களைத் துடையுங்கள்.",
+    "SO": "எடுக்க அசையாமல் வையுங்கள். சரியான பெட்டியில் வையுங்கள்."
   }
 }

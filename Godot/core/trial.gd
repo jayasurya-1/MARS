@@ -266,7 +266,7 @@ func finish(reason: String = "STOPPED") -> bool:
 	var row: PackedStringArray = [str(session),session_started,str(trial_day),str(trial_session),started,stamp(),relative,movement,str(plane),game,str(speed),str(reach_time()),"60",str(rate),str(duration),str(targets),str(hits),str(misses),str(cumulative.x),str(cumulative.y),str(cumulative.z),"0","0",raw_name]
 	row[21] = str(star)
 	row[22] = str(all_stars + star)
-	if game == "BS":
+	if game == "BS" or (Rules.paced(game) and game not in ["FW", "TW"]):
 		row[10] = "0"
 		row[11] = "0" # Patient-paced touch target, without a timeout.
 	if game == "FW":

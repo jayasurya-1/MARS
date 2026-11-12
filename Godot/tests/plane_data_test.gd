@@ -57,8 +57,8 @@ func run()->void:
 	for row in sessions:
 		check(float(row.TrainingPlaneAngle)==-70,"Saved plane "+row.GameName)
 		check(int(row.CurrentHits)==1 and int(row.CurrentTargets)==1,"Saved hit counts "+row.GameName)
-		if row.GameName=="BS":
-			check(float(row.ReachSpeed)==0 and float(row.GameParameter)==0,"Bubble stores patient-paced target convention")
+		if row.GameName in ["BS","CK","DR","IR","MP","SO"]:
+			check(float(row.ReachSpeed)==0 and float(row.GameParameter)==0,"Patient-paced target convention "+row.GameName)
 		elif row.GameName=="FW":
 			check(float(row.ReachSpeed)==0 and is_equal_approx(float(row.GameParameter),.85),"Fireworks stores patient-paced hold duration")
 		elif row.GameName!="TW":

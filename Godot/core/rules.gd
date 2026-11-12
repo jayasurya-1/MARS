@@ -14,8 +14,22 @@ const GAMES = {
 	"FR": {"title":"Fish Rescue", "movement":"MLAP", "scene":"fish-rescue/main.tscn", "span":11.5},
 	"BS": {"title":"Bubble Sparkle", "movement":"MLAP", "scene":"bubble-sparkle/main.tscn", "span":11.5},
 	"FW": {"title":"Fireworks", "movement":"ML", "scene":"fire-works/main.tscn", "span":15.0},
-	"ST": {"title":"Space Tour", "movement":"ML", "scene":"space-tour/main.tscn", "span":10.0}
+	"ST": {"title":"Space Tour", "movement":"ML", "scene":"space-tour/main.tscn", "span":10.0},
+	# Combined-movement daily-life games. Patient-paced (no speed control); "size" is the screen they were drawn for.
+	"CK": {"title":"Vegetable Soup", "movement":"MLAP", "scene":"cooking/scenes/main.tscn", "span":11.5, "size":Vector2i(1280,720), "paced":true},
+	"DR": {"title":"Colour the Picture", "movement":"MLAP", "scene":"drawing/scenes/main.tscn", "span":11.5, "size":Vector2i(1920,1080), "paced":true},
+	"IR": {"title":"Ironing", "movement":"MLAP", "scene":"ironing/main.tscn", "span":11.5, "size":Vector2i(1920,1080), "paced":true},
+	"MP": {"title":"Mopping", "movement":"MLAP", "scene":"mopping/scenes/main.tscn", "span":11.5, "size":Vector2i(1920,1080), "paced":true},
+	"SO": {"title":"Tidy-up Sorting", "movement":"MLAP", "scene":"sorting/scenes/Main.tscn", "span":11.5, "size":Vector2i(1920,1080), "paced":true}
 }
+
+## Patient-paced games: every target waits for the patient, so there is no reach speed to set.
+static func paced(game: String) -> bool:
+	return game in ["TW", "FW", "BS"] or bool(GAMES.get(game, {}).get("paced", false))
+
+## The screen size a game was made for (the app scales it to the window).
+static func game_size(game: String) -> Vector2i:
+	return GAMES.get(game, {}).get("size", Vector2i(1600, 900))
 
 static func screen_limits(game: String) -> Rect2:
 	var values = {"CB":Rect2(-6.82,-3,14.82,9),"SS":Rect2(-7.5,-3.85,15,7.7),"PP":Rect2(-7,-6,14,12),"DC":Rect2(-7.5,-4,15,8),"TW":Rect2(-8.5,-5,17,9.2),"TT":Rect2(-6.82,-3,14.82,9),"MC":Rect2(-7.5,-5,15,8.85),"ST":Rect2(-5,-3,10,6)}

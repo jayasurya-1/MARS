@@ -271,8 +271,9 @@ func open_assessment(kind: String) -> void:
 	add_child(assessment)
 	var current = assessment
 	assessment.finished.connect(func():
-		# Unity continues from the MLAP range straight into the arm-weight assessment.
-		if current.saved and current.kind == "MLAP" and Records.weight.is_empty(): open_assessment("WEIGHT")
+		# A new MLAP range is always followed by a new arm-weight assessment (Unity went straight on too):
+		# the weight targets come from the range, so an older weight no longer fits.
+		if current.saved and current.kind == "MLAP": open_assessment("WEIGHT")
 		else: show_choose())
 
 func open_workflow() -> void:
@@ -349,7 +350,16 @@ func on_fault(message: String) -> void:
 func fit_game_view() -> void:
 	if not is_instance_valid(game_view): return
 	var screen_size = get_viewport_rect().size
-	game_view.scale = Vector2(screen_size.x / 1600.0, screen_size.y / 900.0)
+	var native = Vector2(Rules.game_size(active_code))
+	if Rules.GAMES.get(active_code, {}).has("size"):
+		# The daily-life games keep their own proportions and sit below the HUD bar, so nothing of
+		# theirs is hidden under the clock, score or buttons; the app background shows at the sides.
+		var top = screen_size.y * 0.125
+		var fit = minf(screen_size.x / native.x, (screen_size.y - top) / native.y)
+		game_view.scale = Vector2(fit, fit)
+		game_view.position = Vector2((screen_size.x - native.x * fit) / 2.0, top)
+		return
+	game_view.scale = Vector2(screen_size.x / native.x, screen_size.y / native.y)
 
 func launch(code: String) -> void:
 	if not ensure_user(): return
@@ -373,17 +383,17 @@ func launch(code: String) -> void:
 	if Trial.hardware and NeuroDash.enabled(): NeuroDash.renew_claim()
 	load("res://core/visual_cycle.gd").note_trial(code)
 	clear_screens()
-	backdrop.hide()
+	backdrop.visible = Rules.GAMES[code].has("size")
 	game_view = SubViewportContainer.new()
 	# Every game is full-bleed under the compact glass HUD.
 	game_view.position = Vector2.ZERO
-	game_view.size = Vector2(1600, 900)
+	game_view.size = Vector2(Rules.game_size(code))
 	game_view.stretch = true
 	add_child(game_view)
 	fit_game_view()
 	if not get_tree().root.size_changed.is_connected(fit_game_view): get_tree().root.size_changed.connect(fit_game_view)
 	viewport = SubViewport.new()
-	viewport.size = Vector2i(1600,900)
+	viewport.size = Rules.game_size(code)
 	viewport.handle_input_locally = true
 	game_view.add_child(viewport)
 	if Rules.GAMES[code].has("scene"):
@@ -398,7 +408,7 @@ func launch(code: String) -> void:
 		for child in game_node.get_children():
 			if child is Control and child not in [game_node.hold_label,game_node.overlay]: child.hide()
 	# The 3D tour has its own changing palettes, so the 2D lighting wash is not laid over it.
-	if code != "ST":
+	if code != "ST" and not Rules.GAMES[code].has("size"):
 		var cycle=load("res://core/visual_cycle.gd").new()
 		cycle.game=game_node
 		viewport.add_child(cycle)

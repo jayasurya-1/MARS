@@ -23,14 +23,21 @@ const BLURBS = {
 	"TW": "Wipe the stain off the table.",
 	"FR": "Rescue fish from the sharks.",
 	"BS": "Touch the sparkling bubbles.",
-	"ST": "Glide through space and catch the glowing lights."
+	"ST": "Glide through space and catch the glowing lights.",
+	"CK": "Carry vegetables to the pot and stir the soup.",
+	"DR": "Colour the picture, one glowing shape at a time.",
+	"IR": "Iron the wrinkles out of the clothes.",
+	"MP": "Mop up the dust around the house.",
+	"SO": "Sort the toys into the right boxes."
 }
 # Left and right colours of each game's card.
 const TINTS = {
 	"SS": ["2a1456", "7a35b8"], "MC": ["b0601a", "f1ac4c"], "FW": ["1d2468", "4a45b5"],
 	"PP": ["0f4f57", "1f8c91"], "CB": ["8f431c", "e58b3b"], "TT": ["0e4a6e", "1c8fb3"],
 	"DC": ["3a1f6e", "6b3fc2"], "TW": ["64421f", "b07a42"], "FR": ["0b3d6b", "1b72b8"],
-	"BS": ["1c2f6b", "3f5fd0"], "ST": ["0b1d4a", "5b3fd0"]
+	"BS": ["1c2f6b", "3f5fd0"], "ST": ["0b1d4a", "5b3fd0"],
+	"CK": ["7a3a12", "d9822b"], "DR": ["1d4f7a", "3fa0d9"], "IR": ["5a2a6e", "b05fc9"],
+	"MP": ["1f5e4a", "3fb38a"], "SO": ["6b2a2a", "d9584f"]
 }
 const ASSESSMENTS = [["ML", "ML AROM", "ml"], ["AP", "AP AROM", "ap"], ["MLAP", "MLAP AROM", "mlap"], ["WEIGHT", "Arm Weight", "weight"]]
 var selected = ""
@@ -44,7 +51,6 @@ var assess_box: GridContainer
 var video: PanelContainer
 var move_buttons: Dictionary = {}
 var assess_button: Button
-var weight_button: Button
 var how_label: Label
 const HOW = {
 	"ML": "Move your hand left and right along the glowing line, smoothly and without hurrying. Keep your shoulder relaxed and your elbow supported.",
@@ -142,8 +148,6 @@ func _ready() -> void:
 	round_button(back_button)
 	assess_button = add_button(bottom, "Assess range", func(): start_assessment(), 240)
 	round_button(assess_button)
-	weight_button = add_button(bottom, "Assess arm weight", func(): assess.emit("WEIGHT"), 270)
-	round_button(weight_button)
 	var spacer = Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bottom.add_child(spacer)
@@ -208,8 +212,8 @@ func refresh() -> void:
 	for child in assess_box.get_children(): child.queue_free()
 	for entry in ASSESSMENTS: assess_box.add_child(assessment_tile(entry[0], entry[1], entry[2]))
 	assess_button.disabled = selected == ""
-	assess_button.text = "Assess %s range" % selected if selected != "" else "Assess range"
-	weight_button.disabled = selected != "MLAP"
+	# The arm weight is not a separate step: it follows the MLAP range automatically.
+	assess_button.text = "Assess arm weight" if needs == "WEIGHT" else ("Assess %s range" % selected if selected != "" else "Assess range")
 	rebuild_games()
 	apply_state()
 

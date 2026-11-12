@@ -110,6 +110,10 @@ func load_assessments() -> void:
 			if absf(float(row.TrainingPlaneAngle)-Trial.plane)<=PLANE_TOLERANCE: corners[movement]=row
 	for row in table(Trial.user_path().path_join("armweight/armweight.csv")):
 		if absf(float(row.TrainingPlaneAngle)-Trial.plane)<=PLANE_TOLERANCE: weight=row
+	# An arm weight belongs to the MLAP range it was measured on: one older than the latest MLAP
+	# range must be done again (it follows the MLAP assessment automatically).
+	if corners.has("MLAP") and not weight.is_empty() and str(weight.get("DateTime","")) < str(corners.MLAP.get("DateTime","")):
+		weight = {}
 
 func save_profile(values: Dictionary) -> bool:
 	var row: PackedStringArray = []

@@ -26,6 +26,7 @@ Music="*res://core/music.gd"
 Voice="*res://core/voice_guidance.gd"
 Updater="*res://core/updater.gd"
 NeuroDash="*res://core/neurodash.gd"
+MarsInput="*res://games/cooking/scripts/mars_input.gd"
 
 [display]
 

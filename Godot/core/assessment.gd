@@ -342,7 +342,7 @@ func refresh() -> void:
 			instruction.text = "Five targets recorded. Press the MARS button to save." if is_weight() else "Check the range. Reduce it if needed, then press the MARS button to save."
 			primary_button.text = "Save assessment"
 		SAVED:
-			var next_weight = kind == "MLAP" and Records.weight.is_empty()
+			var next_weight = kind == "MLAP"
 			instruction.text = "Saved. Press the MARS button to continue." + (" The arm-weight assessment is next." if next_weight else "")
 			primary_button.text = "Continue ▸"
 			detail.text = ""
